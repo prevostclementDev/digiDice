@@ -30,15 +30,12 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to,from)=>{
+router.beforeEach((to,from,next)=>{
   const digidice = useDigidiceStore();
-  if(to.name === 'games' && digidice.gameStatus === 'waiting' || digidice.gameStatus === 'finish') {
-    router.push('/');
-  }
-  if(digidice.gameStatus === 'inprogress' && to.name === 'addPlayers') {
-    router.push('/games');
-  }
-  return true;
+
+  const isValid = (to.name === 'games' && (digidice.gameStatus === 'waiting' || digidice.gameStatus === 'finish')) || (digidice.gameStatus === 'inprogress' && to.name === 'addPlayers');
+
+  ( isValid ) ? next({name : 'home'}) : next();
 })
 
 export default router

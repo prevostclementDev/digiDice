@@ -125,6 +125,10 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
       outline: none;
       border: none;
       margin: 10px 0;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
     .container-link {
       margin: 30px 0;

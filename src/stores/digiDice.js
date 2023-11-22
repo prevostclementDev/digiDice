@@ -133,5 +133,24 @@ export const useDigidiceStore = defineStore('digidice', () => {
     })
   }
 
-  return { setStatus, deletePlayer, reset, updateOrCreatePlayer, players, countPlayers, updateScorePlayer ,increment, SymboleArray, gameStatus, resetScorePlayer }
+  function getWinner(){
+    let winner = '';
+    let higeshScore = 0;
+    players.value.map(p=>{
+      let total = 0;
+      Object.keys(p.scores).map(k=>{
+        total += p.scores[k];
+      })
+
+      if(total > higeshScore) {
+        higeshScore = total;
+        winner = p.pseudo;
+      }
+
+    })
+    return [winner,higeshScore];
+  }
+
+
+  return { getWinner, setStatus, deletePlayer, reset, updateOrCreatePlayer, players, countPlayers, updateScorePlayer ,increment, SymboleArray, gameStatus, resetScorePlayer }
 })

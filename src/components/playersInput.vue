@@ -53,8 +53,14 @@ li {
     border: none;
     width: 10%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    margin: 0;
+    padding: 0;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 </style>

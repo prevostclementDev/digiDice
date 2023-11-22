@@ -40,8 +40,12 @@ export const useScoreStore = defineStore('scoreStore',()=>{
         numberIn.value = parseInt(number)
         openFirstNumber.value = false;
 
-        if(number === '0') {
-            digidice.updateScorePlayer(index.value,key.value,number);
+        if( number === '' ) {
+            numberIn.value = 0;
+        }
+
+        if(numberIn.value === 0) {
+            digidice.updateScorePlayer(index.value,key.value,numberIn.value);
             document.querySelector('body').style.overflow = 'auto';
         } else {
             openTypeQuestion.value = true;
