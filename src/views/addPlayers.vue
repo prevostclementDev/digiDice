@@ -103,7 +103,7 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
       font-size: 24px;
       span {
         font-weight: 700;
-        color: #50D693;
+        color: #68BB8C;
       }
     }
     & > p {
@@ -113,7 +113,7 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
       &.subinfo {
         font-size: 18px;
         span {
-          color: #50D693;
+          color: #68BB8C;
         }
       }
     }
@@ -131,11 +131,11 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
     }
     a {
       padding: 15px;
-      border: 1px solid #50D693;
+      border: 1px solid #68BB8C;
       width: fit-content;
       margin: 0 8px;
       text-decoration: none;
-      color: #50D693;
+      color: #68BB8C;
       border-radius: 5px;
     }
   }

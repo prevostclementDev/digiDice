@@ -1,8 +1,15 @@
 <script setup>
-import {useDigidiceStore} from "@/stores/digiDice";
 import GameInput from "@/components/gameInput.vue";
 import router from "@/router";
+
+import {useDigidiceStore} from "@/stores/digiDice";
+import {useScoreStore} from "@/stores/scoreStatus";
+import {ref} from "vue";
+
 const digidice = useDigidiceStore();
+const scoreStatus = useScoreStore();
+
+const modalConfirmClose = ref(false);
 
 function sum(scores){
   let result = 0;
@@ -16,11 +23,29 @@ function stop() {
   router.push('/');
 }
 
+function openModal(){
+  window.scroll(0,0);
+  modalConfirmClose.value = true
+}
+
 function finish(){
   digidice.setStatus('finish');
   digidice.resetScorePlayer();
   router.push('/');
 }
+
+function confirmNumberSelect(){
+  scoreStatus.setNumber(document.querySelector('#numberDiceScore').value)
+}
+
+function confirmQuestionDifficulty(){
+  let value = document.querySelector('#questionDifficulty').value;
+  if(!['m','h','e'].includes(value)) {
+    value = 'm';
+  }
+  scoreStatus.setQuestionDifficulty(value);
+}
+
 </script>
 
 <template>
@@ -65,7 +90,7 @@ function finish(){
 
     <div class="top">
       <div>
-        <button @click.prevent="stop()">
+        <button @click.prevent="openModal()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28" fill="none">
             <path d="M14 2L2 14L14 26" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -101,6 +126,43 @@ function finish(){
     </table>
 
     <button class="linkaction" @click.prevent="finish()">Finish game</button>
+
+    <section class="modal" id="modalChooseNumber" v-if="scoreStatus.openFirstNumber">
+      <div class="content">
+        <p>Enter dice <span>score</span></p>
+        <input id="numberDiceScore" type="number" min="0" max="150" value="0">
+        <button @click.prevent="confirmNumberSelect()" class="linkaction">Confirm</button>
+      </div>
+    </section>
+    <section class="modal"  id="modalChooseTypeQuestion" v-if="scoreStatus.openTypeQuestion">
+      <div class="content">
+        <p>Enter question <span>difficulty</span></p>
+        <select id="questionDifficulty">
+          <option value="e">Easy</option>
+          <option value="m">medium</option>
+          <option value="h">Hard</option>
+        </select>
+        <button @click.prevent="confirmQuestionDifficulty()" class="linkaction">Confirm</button>
+      </div>
+    </section>
+    <section class="modal"  id="modalResponse" v-if="scoreStatus.openResponseQuestion">
+      <div class="content">
+        <p>Did you answer the <span>question</span> correctly</p>
+        <div class="button">
+          <button @click.prevent="scoreStatus.valid('t')" class="linkaction">Yes</button>
+          <button @click.prevent="scoreStatus.valid('f')" class="linkaction">No</button>
+        </div>
+      </div>
+    </section>
+    <section class="modal"  id="modalChooseTypeQuestion" v-if="modalConfirmClose">
+      <div class="content">
+        <p>Are you sure you want to <span>exit</span> the game?</p>
+        <div class="button">
+          <button @click.prevent="stop()" class="linkaction">Yes</button>
+          <button @click.prevent="modalConfirmClose = false" class="linkaction">No</button>
+        </div>
+      </div>
+    </section>
   </section>
 </template>
 
@@ -117,18 +179,18 @@ function finish(){
     flex-direction: column;
     text-align: center;
     .logo {
-      width: 100px;
+      width: 50px;
       height: auto;
       margin: 10px 0;
     }
     .linkaction {
       background: transparent;
       padding: 15px;
-      border: 1px solid #50D693;
+      border: 1px solid #68BB8C;
       width: fit-content;
       margin: 30px auto 20px;
       text-decoration: none;
-      color: #50D693;
+      color: #68BB8C;
       border-radius: 5px;
     }
     .top {
@@ -147,6 +209,10 @@ function finish(){
             outline: none;
             border: none;
             margin-left: 15px;
+            svg {
+              width: 15px;
+              height: auto;
+            }
           }
         }
       }
@@ -170,7 +236,7 @@ function finish(){
     tr {
       th {
         background: rgba(80, 214, 147, 0.0);
-        color:  #50D693;
+        color:  #68BB8C;
         padding : 10px;
         &:nth-child(2) {
           border-radius: 5px 0 0 0;
@@ -183,7 +249,7 @@ function finish(){
         padding: 5px;
         &.symName {
           background: rgba(80, 214, 147, 0.0);
-          color:  #50D693;
+          color:  #68BB8C;
           font-weight: 500;
           min-width: 100px;
           padding: 5px;
@@ -201,10 +267,51 @@ function finish(){
           font-weight: 600;
           color: rgba(80, 214, 147, 0.9);
           &:first-child {
-            color: #50D693;
+            color: #68BB8C;
             font-weight: 900;
           }
         }
+      }
+    }
+  }
+  .modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100svw;
+    height: 100svh;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .content {
+      p {
+        color: #191919;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 15px;
+        span {
+          color: #68BB8C;
+          font-weight: 700;
+        }
+      }
+      .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        button {
+          margin: 5px!important;
+        }
+      }
+      input,select {
+        outline: none;
+        background: rgba(255, 255, 255);
+        border: 1px solid rgba(0, 0, 0, 0.40);
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 18px;
+        width: 80%;
       }
     }
   }

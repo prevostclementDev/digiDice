@@ -1,8 +1,10 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {useDigidiceStore} from "@/stores/digiDice";
+import {useScoreStore} from "@/stores/scoreStatus";
 
 const digidice = useDigidiceStore();
+const scoreStatus = useScoreStore();
 const props = defineProps(['score','symkey','index']);
 const input = ref(null);
 
@@ -12,10 +14,15 @@ onMounted(()=>{
 function update(){
   digidice.updateScorePlayer(props.index,props.symkey,input.value.value);
 }
+
+function startNumberSet(){
+  scoreStatus.setKeyIndex(props.symkey,props.index)
+  scoreStatus.openFirstNumberModal();
+}
 </script>
 
 <template>
-  <td><input @change="update()" ref="input" type="number" :value="score" readonly></td>
+  <td><input @click="startNumberSet()" @change="update()" ref="input" type="number" :value="score" readonly></td>
 </template>
 
 <style scoped lang="scss">
@@ -32,7 +39,7 @@ function update(){
       font-weight: 300;
       background: rgba(80, 214, 147, 0.05);
       border-radius: 5px;
-      padding: 6px;
+      padding: 10px 6px;
     }
 
   }

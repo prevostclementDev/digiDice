@@ -46,16 +46,13 @@ const digidice = useDigidiceStore();
 
     <h1><span>Welcome</span> to Digi’Dice</h1>
 
-    <router-link to="/add_players" @click="digidice.setStatus('waiting')">
+    <router-link to="/add_players" @click="digidice.setStatus('waiting')" v-if="digidice.gameStatus === 'finish' || digidice.gameStatus ==='waiting'">
       <p v-if="digidice.gameStatus === 'waiting'">Start a game</p>
       <p v-if="digidice.gameStatus === 'finish'"  >Restart a game</p>
     </router-link>
 
-    <br>
-
     <div  v-if="digidice.gameStatus === 'inprogress'"  class="startedGame">
       <router-link to="/games">Resume a game</router-link>
-      <br>
       <router-link  to="/add_players?start_type=reset" @click="digidice.setStatus('waiting')">Start new game</router-link>
     </div>
   </section>
@@ -80,7 +77,7 @@ const digidice = useDigidiceStore();
       font-weight: 500;
       font-size: 24px;
       span {
-        color: #50D693;
+        color: #68BB8C;
         font-weight: 700;
       }
     }
@@ -89,12 +86,18 @@ const digidice = useDigidiceStore();
     }
     a {
       padding: 15px;
-      border: 1px solid #50D693;
+      border: 1px solid #68BB8C;
       width: fit-content;
       margin: 30px auto 0;
       text-decoration: none;
-      color: #50D693;
+      color: #68BB8C;
       border-radius: 5px;
+    }
+    .startedGame {
+      margin-top: 45px;
+      a {
+        margin: 5px;
+      }
     }
   }
 </style>
