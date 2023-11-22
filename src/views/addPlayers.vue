@@ -70,7 +70,7 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
     </button>
 
     <div class="container-link">
-      <router-link to="/" @click="digidice.setStatus('waiting')">Go back</router-link>
+      <router-link to="/">Go back</router-link>
       <router-link v-if="digidice.players.length >= 2" to="/games" @click="digidice.setStatus('inprogress')">Start</router-link>
     </div>
   </section>
@@ -103,7 +103,7 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
       font-size: 24px;
       span {
         font-weight: 700;
-        color: #68BB8C;
+        color: #CBBAED;
       }
     }
     & > p {
@@ -113,7 +113,7 @@ if ( route.query.start_type && route.query.start_type === 'reset' ) {
       &.subinfo {
         font-size: 18px;
         span {
-          color: #68BB8C;
+          color: #CBBAED;
         }
       }
     }

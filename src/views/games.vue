@@ -61,6 +61,13 @@ function confirmQuestionDifficulty(){
   scoreStatus.setQuestionDifficulty(value);
 }
 
+function closeAllModal() {
+  scoreStatus.openFirstNumber = false;
+  scoreStatus.openTypeQuestion = false;
+  scoreStatus.openResponseQuestion = false;
+  document.querySelector('body').style.overflow = 'auto';
+}
+
 onMounted(()=>{
   document.querySelector('table').scroll(0,0);
 })
@@ -147,6 +154,11 @@ onMounted(()=>{
     <button class="linkaction" @click.prevent="finish()">Finish game</button>
 
     <section class="modal" id="modalChooseNumber" v-if="scoreStatus.openFirstNumber">
+      <button class="close" @click.prevent="closeAllModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2.31592 13.8913L8.21378 7.99345M8.21378 7.99345L14.1116 2.09558M8.21378 7.99345L2.31592 2.09558M8.21378 7.99345L14.1116 13.8913" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
       <div class="content">
         <p>Enter dice <span>score</span></p>
         <input id="numberDiceScore" type="number" min="0" max="150" value="0">
@@ -154,6 +166,11 @@ onMounted(()=>{
       </div>
     </section>
     <section class="modal"  id="modalChooseTypeQuestion" v-if="scoreStatus.openTypeQuestion">
+      <button class="close" @click.prevent="closeAllModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2.31592 13.8913L8.21378 7.99345M8.21378 7.99345L14.1116 2.09558M8.21378 7.99345L2.31592 2.09558M8.21378 7.99345L14.1116 13.8913" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
       <div class="content">
         <p>Enter question <span>difficulty</span></p>
         <select id="questionDifficulty">
@@ -165,6 +182,11 @@ onMounted(()=>{
       </div>
     </section>
     <section class="modal"  id="modalResponse" v-if="scoreStatus.openResponseQuestion">
+      <button class="close" @click.prevent="closeAllModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2.31592 13.8913L8.21378 7.99345M8.21378 7.99345L14.1116 2.09558M8.21378 7.99345L2.31592 2.09558M8.21378 7.99345L14.1116 13.8913" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
       <div class="content">
         <p>Did you answer the <span>question</span> correctly</p>
         <div class="button">
@@ -265,7 +287,7 @@ onMounted(()=>{
         margin-top: 15px;
         font-weight: 500;
         span {
-          color: #68BB8C;
+          color: #CBBAED;
           font-weight: 700;
         }
       }
@@ -358,9 +380,9 @@ onMounted(()=>{
         td {
           padding-top: 15px;
           font-weight: 600;
-          color: rgba(80, 214, 147, 0.9);
+          color: #CBBAED;
           &:first-child {
-            color: #68BB8C;
+            color: #CBBAED;
             font-weight: 900;
           }
         }
@@ -377,6 +399,18 @@ onMounted(()=>{
     display: flex;
     justify-content: center;
     align-items: center;
+    button.close {
+      outline: none;
+      border: none;
+      position: absolute;
+      background: transparent;
+      top: 20px;
+      right: 20px;
+      svg {
+        width: 25px;
+        height: 25px;
+      }
+    }
     .content {
       p {
         color: #191919;
@@ -384,7 +418,7 @@ onMounted(()=>{
         font-weight: 500;
         margin-bottom: 15px;
         span {
-          color: #68BB8C;
+          color: #CBBAED;
           font-weight: 700;
         }
       }
