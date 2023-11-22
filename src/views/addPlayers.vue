@@ -1,10 +1,21 @@
 <script setup>
 import {useDigidiceStore} from "@/stores/digiDice";
+import PlayersInput from "@/components/playersInput.vue";
+import {useRoute,useRouter} from "vue-router";
+
 const digidice = useDigidiceStore();
+
+const router = useRouter();
+const route = useRoute()
+
+if ( route.query.start_type && route.query.start_type === 'reset' ) {
+  digidice.reset();
+}
+
 </script>
 
 <template>
-  <section id="main-page">
+  <section id="add-player-main-page">
 
     <svg width="209" height="79" viewBox="0 0 209 79" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clip-path="url(#clip0_5_3784)">
@@ -44,57 +55,89 @@ const digidice = useDigidiceStore();
       </defs>
     </svg>
 
-    <h1><span>Welcome</span> to Digi’Dice</h1>
+    <h1>Let's <span>start</span></h1>
+    <p>Choose your player</p>
+    <p class="subinfo">Click on the <span>'+'</span> to add a player.</p>
 
-    <router-link to="/add_players" @click="digidice.setStatus('waiting')">
-      <p v-if="digidice.gameStatus === 'waiting'">Start a game</p>
-      <p v-if="digidice.gameStatus === 'finish'"  >Restart a game</p>
-    </router-link>
+    <ul id="list-player">
+      <players-input v-for="index of digidice.countPlayers" :index="index-1" :value="(!digidice.players[index-1]) ? '' : digidice.players[index-1].pseudo"></players-input>
+    </ul>
 
-    <br>
+    <button v-if="digidice.countPlayers < 6" id="cancelBTN" @click="digidice.increment()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 18 16" fill="none">
+        <path d="M2 8.15285H9.03183M9.03183 8.15285H16.0637M9.03183 8.15285V2M9.03183 8.15285V14.3057" stroke="#191919" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-    <div  v-if="digidice.gameStatus === 'inprogress'"  class="startedGame">
-      <router-link to="/games">Resume a game</router-link>
-      <br>
-      <router-link  to="/add_players?start_type=reset" @click="digidice.setStatus('waiting')">Start new game</router-link>
+    <div class="container-link">
+      <router-link to="/" @click="digidice.setStatus('waiting')">Go back</router-link>
+      <router-link v-if="digidice.players.length >= 2" to="/games" @click="digidice.setStatus('inprogress')">Start</router-link>
     </div>
   </section>
 </template>
 
+
 <style lang="scss" scoped>
-  #main-page {
+  #add-player-main-page {
     background: white;
     min-width: 100svw;
     min-height: 100svh;
     height: fit-content;
     width: fit-content;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 20svh;
     align-items: center;
     flex-direction: column;
     text-align: center;
+    & > svg {
+      width: 100px;
+      height: auto;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translate(-50%,0);
+    }
     h1 {
-      margin-top: 15px;
-      font-family: 'Inter', sans-serif;
-      color: #191919;
       font-weight: 500;
       font-size: 24px;
       span {
-        color: #50D693;
         font-weight: 700;
+        color: #50D693;
       }
     }
-    svg {
-      margin: 0 auto 15px;
+    & > p {
+      font-size: 22px;
+      margin: 10px 0;
+      font-weight: 400;
+      &.subinfo {
+        font-size: 18px;
+        span {
+          color: #50D693;
+        }
+      }
+    }
+    #list-player {
+      margin-top: 20px;
+    }
+    #cancelBTN {
+      background: none;
+      outline: none;
+      border: none;
+      margin: 10px 0;
+    }
+    .container-link {
+      margin: 30px 0;
     }
     a {
       padding: 15px;
       border: 1px solid #50D693;
       width: fit-content;
-      margin: 30px auto 0;
+      margin: 0 8px;
       text-decoration: none;
       color: #50D693;
       border-radius: 5px;
     }
   }
 </style>
+

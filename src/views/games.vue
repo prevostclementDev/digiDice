@@ -1,12 +1,31 @@
 <script setup>
 import {useDigidiceStore} from "@/stores/digiDice";
+import GameInput from "@/components/gameInput.vue";
+import router from "@/router";
 const digidice = useDigidiceStore();
+
+function sum(scores){
+  let result = 0;
+  Object.keys(scores).map(k=>{ result += scores[k] })
+  return result;
+}
+
+function stop() {
+  digidice.reset();
+  digidice.setStatus('waiting');
+  router.push('/');
+}
+
+function finish(){
+  digidice.setStatus('finish');
+  digidice.resetScorePlayer();
+  router.push('/');
+}
 </script>
 
 <template>
-  <section id="main-page">
-
-    <svg width="209" height="79" viewBox="0 0 209 79" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <section id="main-games">
+    <svg class="logo" width="209" height="79" viewBox="0 0 209 79" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clip-path="url(#clip0_5_3784)">
         <path d="M0 78.2515V25.8554H13.2231C15.6914 25.8554 17.9196 26.4426 19.911 27.6153C21.9008 28.7879 23.4875 30.3598 24.6713 32.3309C25.8551 34.3037 26.4478 36.5109 26.4478 38.9561V65.1541C26.4478 67.5993 25.8551 69.8082 24.6713 71.7793C23.4875 73.7504 21.9008 75.3223 19.911 76.495C17.9212 77.6677 15.6914 78.2548 13.2231 78.2548H0V78.2515ZM11.2585 68.5957H13.3742C13.8779 68.5957 14.2927 68.421 14.6201 68.0717C14.9475 67.724 15.1104 67.3232 15.1104 66.8741V37.3077C15.1104 36.8586 14.9458 36.4594 14.6201 36.1101C14.291 35.7608 13.8762 35.5861 13.3742 35.5861H11.2585V68.5957Z" fill="black"/>
         <path d="M29.393 78.2515V25.8554H40.8026V78.2515H29.393Z" fill="black"/>
@@ -44,57 +63,149 @@ const digidice = useDigidiceStore();
       </defs>
     </svg>
 
-    <h1><span>Welcome</span> to Digi’Dice</h1>
-
-    <router-link to="/add_players" @click="digidice.setStatus('waiting')">
-      <p v-if="digidice.gameStatus === 'waiting'">Start a game</p>
-      <p v-if="digidice.gameStatus === 'finish'"  >Restart a game</p>
-    </router-link>
-
-    <br>
-
-    <div  v-if="digidice.gameStatus === 'inprogress'"  class="startedGame">
-      <router-link to="/games">Resume a game</router-link>
-      <br>
-      <router-link  to="/add_players?start_type=reset" @click="digidice.setStatus('waiting')">Start new game</router-link>
+    <div class="top">
+      <div>
+        <button @click.prevent="stop()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28" fill="none">
+            <path d="M14 2L2 14L14 26" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <h1>Scoreboard</h1>
+      <div></div>
     </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="noshowing"></th>
+          <th v-for="player of digidice.players">{{player.pseudo}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="sym of digidice.SymboleArray()">
+          <td class="symName">{{sym.name}}</td>
+          <game-input v-for="(player,index) in digidice.players"
+                      :symkey="sym.key"
+                      :index="index"
+                      :score="player.scores[sym.key]" >
+          </game-input>
+        </tr>
+        <tr class="score">
+          <td>Total</td>
+          <td v-for="player of digidice.players">
+            {{ sum(player.scores) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="linkaction" @click.prevent="finish()">Finish game</button>
   </section>
 </template>
 
-<style lang="scss" scoped>
-  #main-page {
+<style scoped lang="scss">
+  #main-games {
     background: white;
     min-width: 100svw;
     min-height: 100svh;
     height: fit-content;
     width: fit-content;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     text-align: center;
-    h1 {
-      margin-top: 15px;
-      font-family: 'Inter', sans-serif;
-      color: #191919;
-      font-weight: 500;
-      font-size: 24px;
-      span {
-        color: #50D693;
-        font-weight: 700;
-      }
+    .logo {
+      width: 100px;
+      height: auto;
+      margin: 10px 0;
     }
-    svg {
-      margin: 0 auto 15px;
-    }
-    a {
+    .linkaction {
+      background: transparent;
       padding: 15px;
       border: 1px solid #50D693;
       width: fit-content;
-      margin: 30px auto 0;
+      margin: 30px auto 20px;
       text-decoration: none;
       color: #50D693;
       border-radius: 5px;
+    }
+    .top {
+      display: flex;
+      width: 100svw;
+      margin: 15px 0;
+      padding: 0 10px;
+      & > div {
+        width: 25%;
+        display: flex;
+        &:first-child {
+          justify-content: flex-start;
+          align-items: flex-start;
+          button {
+            background: transparent;
+            outline: none;
+            border: none;
+            margin-left: 15px;
+          }
+        }
+      }
+      h1 {
+        width: 50%;
+        text-align: center;
+        font-weight: 500;
+      }
+    }
+  }
+  .noshowing {
+    opacity: 0;
+  }
+  table {
+    max-width: 90svw;
+    display: block;
+    overflow-y: scroll;
+    border-collapse: collapse;
+    font-size: 20px;
+    &::-webkit-scrollbar { display: none; }
+    tr {
+      th {
+        background: rgba(80, 214, 147, 0.0);
+        color:  #50D693;
+        padding : 10px;
+        &:nth-child(2) {
+          border-radius: 5px 0 0 0;
+        }
+        &:last-child {
+          border-radius: 0 5px 0 0;
+        }
+      }
+      td {
+        padding: 5px;
+        &.symName {
+          background: rgba(80, 214, 147, 0.0);
+          color:  #50D693;
+          font-weight: 500;
+          min-width: 100px;
+          padding: 5px;
+
+        }
+      }
+      &:first-child {
+        .symName {
+          border-radius: 5px 0 0 0;
+        }
+      }
+      &.score {
+        td {
+          padding-top: 15px;
+          font-weight: 600;
+          color: rgba(80, 214, 147, 0.9);
+          &:first-child {
+            color: #50D693;
+            font-weight: 900;
+          }
+        }
+      }
     }
   }
 </style>
