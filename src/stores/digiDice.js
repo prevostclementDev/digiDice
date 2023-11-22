@@ -128,14 +128,16 @@ export const useDigidiceStore = defineStore('digidice', () => {
   }
 
   function resetScorePlayer(){
-    players.value.map(el => {
-      el.scores = createScorePlayer();
-    })
+    for ( let index in players.value ) {
+      players.value[index].scores = createScorePlayer()
+    }
+    save();
   }
 
   function getWinner(){
     let winner = '';
     let higeshScore = 0;
+
     players.value.map(p=>{
       let total = 0;
       Object.keys(p.scores).map(k=>{
@@ -148,9 +150,9 @@ export const useDigidiceStore = defineStore('digidice', () => {
       }
 
     })
+
     return [winner,higeshScore];
   }
-
 
   return { getWinner, setStatus, deletePlayer, reset, updateOrCreatePlayer, players, countPlayers, updateScorePlayer ,increment, SymboleArray, gameStatus, resetScorePlayer }
 })

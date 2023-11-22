@@ -44,7 +44,7 @@ const digidice = useDigidiceStore();
       </defs>
     </svg>
 
-    <h1><span>Welcome</span> to Digi’Dice</h1>
+    <h1><span>Welcome</span> to Digi’Dice <br> Calculator</h1>
 
     <router-link to="/add_players" @click="digidice.setStatus('waiting')" v-if="digidice.gameStatus === 'finish' || digidice.gameStatus ==='waiting'">
       <p v-if="digidice.gameStatus === 'waiting'">Start a game</p>

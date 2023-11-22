@@ -33,14 +33,15 @@ function openModal(){
 function finish(){
   digidice.setStatus('finish');
   const winnerData = digidice.getWinner();
+
+  digidice.resetScorePlayer();
+
   winner.value = winnerData[0];
   pointsWinner.value = winnerData[1];
-
 
   setTimeout(()=>{
     const container = document.querySelector('.winnerBoxFireworks');
     const fireworks = new Fireworks(container, {});
-    digidice.resetScorePlayer();
     fireworks.start()
     setTimeout(()=>{
       fireworks.stop();
@@ -59,6 +60,10 @@ function confirmQuestionDifficulty(){
   }
   scoreStatus.setQuestionDifficulty(value);
 }
+
+onMounted(()=>{
+  document.querySelector('table').scroll(0,0);
+})
 
 </script>
 
