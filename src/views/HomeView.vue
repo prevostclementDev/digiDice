@@ -187,7 +187,7 @@ onMounted(()=>{
         </defs>
       </svg>
 
-      <svg class="active" xmlns="http://www.w3.org/2000/svg" width="47" height="48" viewBox="0 0 47 48" fill="none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="47" height="48" viewBox="0 0 47 48" fill="none">
         <g clip-path="url(#clip0_5_3415)">
           <path d="M19.7729 1.08975L3.90443 9.56228C1.5976 10.7911 0.179108 13.0666 0.179108 15.5275V32.4726C0.179108 34.9335 1.5976 37.209 3.90443 38.4378L19.7765 46.9103C22.0833 48.1425 24.9203 48.1425 27.2271 46.9103L43.0992 38.4378C45.406 37.2057 46.8245 34.9335 46.8245 32.4726V15.5275C46.8245 13.0666 45.406 10.7911 43.0992 9.56228L27.2235 1.08975C24.9167 -0.142383 22.0797 -0.142383 19.7729 1.08975Z" fill="black" stroke="black" stroke-miterlimit="10"/>
           <path d="M20.4033 46.8506L3.39578 37.7124C1.91998 36.9207 0.71283 34.9235 0.71283 33.2774V14.9312C0.71283 13.2851 1.91998 12.5862 3.39578 13.3778L20.4033 22.5161C21.8791 23.3077 23.0863 25.305 23.0863 26.9511V45.2972C23.0863 46.9434 21.8791 47.6422 20.4033 46.8506Z" fill="white" stroke="black" stroke-miterlimit="10"/>
@@ -300,7 +300,7 @@ onMounted(()=>{
       height: fit-content;
       svg {
         opacity: 0.3;
-        transition: opacity ease-in-out 0.4s ;
+        transition: opacity ease-out 0.4s ;
         &.active {
           opacity: 1;
           path {

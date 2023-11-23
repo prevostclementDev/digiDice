@@ -6,7 +6,6 @@ export const useDigidiceStore = defineStore('digidice', () => {
   let countPlayers = ref(2);
   const maxPlayers = 6;
   let gameStatus = ref('waiting') // waiting -> inprogress -> finish
-  // const doubleCount = computed(() => count.value * 2)
   const loadData = JSON.parse(get());
   const metaData = JSON.parse(getSaveMetaData());
 
