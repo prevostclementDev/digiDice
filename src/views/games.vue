@@ -225,6 +225,7 @@ onMounted(()=>{
     align-items: center;
     flex-direction: column;
     text-align: center;
+    overflow-x: hidden;
     position: relative;
     .winnerBoxFireworks {
       position: absolute;
