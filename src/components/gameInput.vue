@@ -11,18 +11,16 @@ const input = ref(null);
 onMounted(()=>{
   input.value.focus();
 })
-function update(){
-  digidice.updateScorePlayer(props.index,props.symkey,input.value.value);
-}
 
 function startNumberSet(){
   scoreStatus.setKeyIndex(props.symkey,props.index)
+  scoreStatus.setElementInput(input.value);
   scoreStatus.openFirstNumberModal();
 }
 </script>
 
 <template>
-  <td><input @click="startNumberSet()" @change="update()" ref="input" type="number" :value="score" readonly></td>
+  <td><input @click="startNumberSet()" ref="input" type="number" :value="score" readonly></td>
 </template>
 
 <style scoped lang="scss">
@@ -40,6 +38,9 @@ function startNumberSet(){
       background: rgba(80, 214, 147, 0.05);
       border-radius: 5px;
       padding: 10px 6px;
+      &.played {
+        background: rgba(80, 214, 147, 0.2);
+      }
     }
 
   }

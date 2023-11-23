@@ -19,7 +19,7 @@ export const useScoreStore = defineStore('scoreStore',()=>{
     let openFirstNumber = ref(false);
     let openTypeQuestion = ref(false);
     let openResponseQuestion = ref(false);
-
+    let elementToUpdate = ref(null);
     let numberIn = ref(0);
     let typeOfQuestion = ref('null');
 
@@ -28,6 +28,10 @@ export const useScoreStore = defineStore('scoreStore',()=>{
     function setKeyIndex(setKey,setIndex){
         key.value = setKey;
         index.value = setIndex;
+    }
+
+    function setElementInput(element){
+        elementToUpdate.value = element;
     }
 
     function openFirstNumberModal() {
@@ -47,6 +51,9 @@ export const useScoreStore = defineStore('scoreStore',()=>{
         if(numberIn.value === 0) {
             digidice.updateScorePlayer(index.value,key.value,numberIn.value);
             document.querySelector('body').style.overflow = 'auto';
+            if(elementToUpdate.value !== null) {
+                elementToUpdate.value.classList.add('played')
+            }
         } else {
             openTypeQuestion.value = true;
         }
@@ -63,9 +70,12 @@ export const useScoreStore = defineStore('scoreStore',()=>{
         let calculator = scoreBonus[typeOfQuestion.value][bool];
         digidice.updateScorePlayer(index.value,key.value,multiplicator[calculator.op](numberIn.value,calculator.value));
         openResponseQuestion.value = false;
+        if(elementToUpdate.value !== null) {
+            elementToUpdate.value.classList.add('played')
+        }
         document.querySelector('body').style.overflow = 'auto';
     }
 
-    return { openResponseQuestion, openFirstNumber,openTypeQuestion, setKeyIndex, openFirstNumberModal, setNumber , setQuestionDifficulty, valid };
+    return { setElementInput, openResponseQuestion, openFirstNumber,openTypeQuestion, setKeyIndex, openFirstNumberModal, setNumber , setQuestionDifficulty, valid };
 
 })
