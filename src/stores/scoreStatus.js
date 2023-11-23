@@ -5,8 +5,8 @@ import {useDigidiceStore} from "@/stores/digiDice";
 export const useScoreStore = defineStore('scoreStore',()=>{
     const scoreBonus = {
         'h':{'f':{op:'/',value:2},'t':{op:'*',value:2}},
-        'e':{'f':{op:'-',value:2},'t':{op:'+',value:2}},
-        'm':{'f':{op:'-',value:4},'t':{op:'+',value:4}},
+        'e':{'f':{op:'-',value:1},'t':{op:'+',value:1}},
+        'm':{'f':{op:'-',value:2},'t':{op:'+',value:2}},
     };
     const multiplicator = {
         '/': function (a,b) { return a / b; },
