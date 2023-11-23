@@ -8,6 +8,9 @@ onMounted(()=>{
   if(window.innerWidth > 800) {
     enableSizeScreen.value = false;
   }
+  window.onresize = () => {
+    enableSizeScreen.value = window.innerWidth < 800;
+  }
 })
 </script>
 
